@@ -1,36 +1,38 @@
 "use client";
 import React, { useState } from 'react';
-import ItemList from "./item-list";
-import NewItem from "./new-item";
-import MealIdeas from "./meal-ideas";
+import Link from 'next/link';
 import itemsData from './items.json';
+import ItemList from './item-list';
+import NewItem from './new-item';
+import MealIdeas from './meal-ideas';
 
 export default function Page() {
-    const [items, setItems] = useState(itemsData);
-    const [selectedItemName, setSelectedItemName] = useState("");
+  const [items, setItems] = useState(itemsData);
+  const [selectedItemName, setSelectedItemName] = useState('');
 
-    const handleAddItem = (newItem) => {
-        setItems(prevItems => [...prevItems, newItem]);
-    };
+  const handleItemSelect = selectedItem => {
+    const cleanedItemName = selectedItem.name.split(',')[0].trim();
+    setSelectedItemName(cleanedItemName);
+  };
 
-    const handleItemSelect = (itemName) => {
-        const cleanedName = itemName.trim().toLowerCase();
-        setSelectedItemName(cleanedName);
-    };
+  const handleAddItem = newItem => {
+    setItems(prevItems => [...prevItems, newItem]);
+  };
 
-    return (
-        <main>
-            <h1 className="font-bold">My shopping list</h1>  {/* added the "font-bold" class */}
-            <div className="flex">
-                <div>
-                    <NewItem onAddItem={handleAddItem} />
-                    <ItemList items={items} onItemSelect={handleItemSelect} />
-                </div>
-                <div>
-                    <h2 className="font-bold">Meal Ideas</h2>  {/* added the "font-bold" class */}
-                    <MealIdeas ingredient={selectedItemName} />
-                </div>
-            </div>
-        </main>
-    );
+  return (
+    <main style={{ display: 'flex' }}>
+      <div style={{ flex: 1, marginRight: '20px' }}>
+        <h1 style={{ fontSize: 45 }}>My Shopping List</h1>
+        <NewItem onAddItem={handleAddItem} />
+        <ItemList items={items} onItemSelect={handleItemSelect} />
+      </div>
+      <div style={{ flex: 1 }}>
+        <h2 style={{ fontSize: 30 }}>Meal Ideas</h2>
+        <MealIdeas ingredient={selectedItemName} />
+      </div>
+      <div>
+        <Link href="../">Click here to go to the main page</Link>
+      </div>
+    </main>
+  );
 }
