@@ -1,30 +1,58 @@
-import React from 'react';
-import Item from './item';
+import React, { useState } from 'react';
+import Item from './item'; // Assuming the Item component is in a file named Item.js
+import './styles.css';
 
-export default function ItemList({ items, onItemSelect }) {
-    return (
-        <div className="bg-black-500 min-h-screen text-white font-sans">
-            <div className="mb-4 p-4">
-                <button
-                    className="mr-5 px-3 py-2 text-xl rounded bg-blue-500"
-                    onClick={() => setSortBy('name')}
-                >
-                    Sort by Name
-                </button>
-                <button
-                    className="px-3 py-2 text-xl rounded bg-blue-500"
-                    onClick={() => setSortBy('category')}
-                >
-                    Sort by Category
-                </button>
-            </div>
-            <ul>
-                {items.map((item, index) => (
-                    <li key={index} className="m-4 p-1 border rounded shadow-md bg-gray-800 text-lg">
-                        <Item {...item} onSelect={onItemSelect} />
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
+function ItemList({ items, onItemSelect }) {
+  const [sortBy, setSortBy] = useState('name');
+
+  const sortedItems = [...items];
+  if (sortBy === 'name') {
+    sortedItems.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (sortBy === 'category') {
+    sortedItems.sort((a, b) => a.category.localeCompare(b.category));
+  }
+
+  const isSortByName = sortBy === 'name';
+  const isSortByCategory = sortBy === 'category';
+
+  const handleSortByName = () => {
+    setSortBy('name');
+  };
+
+  const handleSortByCategory = () => {
+    setSortBy('category');
+  };
+
+  return (
+    <div>
+      <div>
+        <button
+          onClick={handleSortByName}
+          className={`sort-button ${isSortByName ? 'selected' : ''} orange-button`}
+        >
+          Sort by Name
+        </button>
+        <button
+          onClick={handleSortByCategory}
+          className={`sort-button ${isSortByCategory ? 'selected' : ''} orange-button`}
+        >
+          Sort by Category
+        </button>
+      </div>
+
+      <ul>
+        {sortedItems.map((item) => (
+          <Item
+            key={item.id}
+            name={item.name}
+            quantity={item.quantity}
+            category={item.category}
+            onClick={() => onItemSelect(item)}
+          />
+        ))}
+      </ul>
+    </div>
+  );
 }
+
+export default ItemList;

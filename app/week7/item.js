@@ -1,12 +1,13 @@
-export default function Item({ name, quantity, category, onSelect }) {
-    return (
-      <div 
-        className="border border-sky-500 bg-sky-800 w-full max-w-xs m-3 p-2 cursor-pointer hover:bg-sky-700"
-        onClick={() => onSelect(name)} 
-      >
-        <h3 className="text-xl font-bold">{name}</h3>
-        <p>quantity: {quantity}</p>
-        <p>category: {category}</p>
-      </div>
-    );
+import React from 'react';
+
+const Item = ({ name, quantity, category, onSelect }) => {
+  return (
+    <li className="bg-yellow shadow-md rounded-lg p-4 mb-4" onClick={() => onSelect({ name, quantity, category })}>
+      <div className="font-semibold text-lg">{name}</div>
+      <div className="text-gray-600">{category}</div>
+      <div className="text-sm text-gray-500">{`Quantity: ${quantity}`}</div>
+    </li>
+  );
 };
+
+export default Item;
